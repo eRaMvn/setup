@@ -1,29 +1,34 @@
 #!/bin/bash
-sudo add-apt-repository -y ppa:longsleep/golang-backports
+sudo add-apt-repository ppa:longsleep/golang-backports
 sudo apt -y update
+sudo adduser $USER vboxsf
 
-sudo apt install -y net-tools
-sudo apt install -y libcurl4-openssl-dev
-sudo apt install -y libssl-dev
-sudo apt install -y jq
-sudo apt install -y ruby-full
-sudo apt install -y libcurl4-openssl-dev libxml2 libxml2-dev libxslt1-dev ruby-dev build-essential libgmp-dev zlib1g-dev
-sudo apt install -y build-essential libssl-dev libffi-dev python-dev
-sudo apt install -y libmysqlclient-dev
-sudo apt install -y python-setuptools
-sudo apt install -y libldns-dev
-sudo apt install -y python3-pip
-sudo apt install -y python-pip
-sudo apt install -y python-dnspython
-sudo apt install -y git
-sudo apt install -y rename
-sudo apt install -y xargs
-sudo apt install -y tmux
-sudo apt install -y vim
-sudo apt install -y curl
-sudo apt install -y golang-go
-sudo apt install -y openssh-server
-sudo apt install -y openjdk-8-jdk openjdk-8-jre
+sudo apt install -y \
+apt-transport-https \
+ca-certificates \
+gnupg \
+lsb-release \
+net-tools \
+libcurl4-openssl-dev libssl-dev \
+jq \
+ruby-full \
+libcurl4-openssl-dev libxml2 libxml2-dev libxslt1-dev ruby-dev build-essential libgmp-dev zlib1g-dev \
+build-essential libssl-dev libffi-dev python-dev \
+libmysqlclient-dev \
+python-setuptools \
+libldns-dev \
+python3-pip \
+python-dnspython \
+git \
+rename \
+xargs \
+tmux \
+vim \
+nmap \
+curl \
+golang-go \
+openssh-server \
+openjdk-11-jdk openjdk-11-jre
 sudo snap install amass
 
 sudo systemctl enable ssh
@@ -31,6 +36,14 @@ sudo systemctl start ssh
 
 # install common python3 libraries
 pip3 install boto3 requests lxml ipparser
+
+echo "Installing docker"
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+echo "done"
 
 echo "Installing bash_profile aliases from recon_profile"
 cat .bash_profile >> ~/.bash_profile
@@ -40,22 +53,18 @@ echo "done"
 
 # Setting up tmux
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-tmux source ./bbht/.tmux.conf
+tmux source .tmux.conf
 # echo "tmux source ~/.tmux.conf" >> ~/.bashrc
 
 #Don't forget to set up AWS credentials!
 echo "Don't forget to set up AWS credentials!"
-sudo apt install -y awscli
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
 
 #create a tools folder in ~/
 mkdir ~/tools
 cd ~/tools/
-
-#install GoldFish
-echo "Installing GoldFish"
-git clone https://github.com/eRaMvn/LazyTools.git
-cd ~/tools/
-echo "done"
 
 #install patator
 echo "Installing Patator"
@@ -65,31 +74,12 @@ sudo python3 setup.py install
 cd ~/tools/
 echo "done"
 
-#install aquatone
-echo "Installing Aquatone"
-go get github.com/michenriksen/aquatone
-echo "done"
-
 #install eyewitness
 echo "Installing EyeWitness"
 git clone https://github.com/FortyNorthSecurity/EyeWitness.git
 cd EyeWitness
 cd setup
 sudo ./setup.sh
-cd ~/tools/
-echo "done"
-
-echo "Installing JSParser"
-git clone https://github.com/nahamsec/JSParser.git
-cd JSParser
-sudo python setup.py install
-cd ~/tools/
-echo "done"
-
-echo "Installing Sublist3r"
-git clone https://github.com/aboul3la/Sublist3r.git
-cd Sublist3r
-pip install -r requirements.txt
 cd ~/tools/
 echo "done"
 
@@ -115,11 +105,6 @@ git clone https://github.com/maurosoria/dirsearch.git
 cd ~/tools/
 echo "done"
 
-echo "Installing lazys3"
-git clone https://github.com/nahamsec/lazys3.git
-cd ~/tools/
-echo "done"
-
 echo "Installing virtual host discovery"
 git clone https://github.com/jobertabma/virtual-host-discovery.git
 cd ~/tools/
@@ -135,14 +120,6 @@ git clone https://github.com/guelfoweb/knock.git
 cd ~/tools/
 echo "done"
 
-echo "Installing lazyrecon"
-git clone https://github.com/nahamsec/lazyrecon.git
-cd ~/tools/
-echo "done"
-
-echo "Installing nmap"
-sudo apt install -y nmap
-echo "done"
 
 echo "Installing massdns"
 git clone https://github.com/blechschmidt/massdns.git
@@ -182,7 +159,7 @@ cd ~/tools
 echo "done"
 
 echo "Installing httprobe"
-go get -u github.com/tomnomnom/httprobe 
+go get -u github.com/tomnomnom/httprobe
 echo "done"
 
 echo "Installing meg"
@@ -190,7 +167,7 @@ go get -u github.com/tomnomnom/meg
 echo "done"
 
 echo "Installing unfurl"
-go get -u github.com/tomnomnom/unfurl 
+go get -u github.com/tomnomnom/unfurl
 echo "done"
 
 echo "Installing waybackurls"
@@ -208,9 +185,6 @@ echo "done"
 echo "Downloading Seclists"
 cd ~/tools/
 git clone https://github.com/danielmiessler/SecLists.git
-cd ~/tools/SecLists/Discovery/DNS/
-##THIS FILE BREAKS MASSDNS AND NEEDS TO BE CLEANED
-cat dns-Jhaddix.txt | head -n -14 > clean-jhaddix-dns.txt
 cd ~/tools/
 echo "done"
 
@@ -220,12 +194,20 @@ sudo sh -c 'echo deb https://pkg.jenkins.io/debian binary/ > \
     /etc/apt/sources.list.d/jenkins.list'
 sudo apt-get update
 sudo apt-get install jenkins
-ufw allow 8080
+# Stop jenkins to move to a new locations
+sudo systemctl stop jenkins
+# Delete existing folder
+sudo rm -rf /var/lib/jenkins
+# Add jenkins user to the shared bug-bounty folder
+sudo adduser jenkins vboxsf
+# Copy config jenkins config file
+sudo cp jenkins /etc/default/jenkins
+sudo systemctl start jenkins
 
 # subzy, subjack, assetfinder
 go get -u github.com/tomnomnom/assetfinder
 
 go get -u github.com/jaeles-project/gospider
 
-echo -e "\n\n\n\n\n\n\n\n\n\n\nDone! All tools are set up in ~/tools"
+echo -e "\n\n\n\nDone! All tools are set up in ~/tools"
 ls -la
