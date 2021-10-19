@@ -27,6 +27,7 @@ vim \
 nmap \
 curl \
 golang-go \
+nikto \
 openssh-server \
 openjdk-11-jdk openjdk-11-jre
 sudo snap install amass
@@ -35,7 +36,13 @@ sudo systemctl enable ssh
 sudo systemctl start ssh
 
 # install common python3 libraries
-pip3 install boto3 requests lxml ipparser
+pip3 install boto3 requests lxml ipparser py-altdns
+
+# Install starship shell
+sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- -y
+echo 'eval "$(starship init bash)"' >> ~/.bashrc
+mkdir -p ~/.config
+cp starship.toml ~/.config/
 
 echo "Installing docker"
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
@@ -66,18 +73,69 @@ sudo ./aws/install
 mkdir ~/tools
 cd ~/tools/
 
-#install patator
+echo "Installing asnlookup"
+git clone https://github.com/yassineaboukir/asnlookup.git
+cd ~/tools/asnlookup
+pip3 install -r requirements.txt
+cd ~/tools/
+echo "done"
+
+echo "Installing SubDomainizer"
+git clone https://github.com/nsonaniya2010/SubDomainizer.git
+cd ~/tools/SubDomainizer
+pip3 install -r requirements.txt
+cd ~/tools/
+echo "done"
+
+echo "Installing Subscraper"
+git clone https://github.com/m8r0wn/subscraper
+cd ~/tools/subscraper
+pip3 install -r requirements.txt
+cd ~/tools/
+echo "done"
+
+echo "Installing subfinder"
+go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+echo "done"
+
+echo "Installing waybackurls"
+go get github.com/tomnomnom/waybackurls
+echo "done"
+
+echo "Downloading metabigor"
+go get -u github.com/j3ssie/metabigor
+echo "done"
+
+echo "Installing gospider"
+go get -u github.com/jaeles-project/gospider
+echo "done"
+
+echo "Installing shuffledns"
+go get -v github.com/projectdiscovery/shuffledns/cmd/shuffledns
+echo "done"
+
+echo "Installing shosubgo"
+wget https://github.com/incogbyte/shosubgo/releases/download/2.0/shosubgo_linux
+mv shosubgo_linux ~/go/bin
+echo "done"
+
+echo "Installing Interlace"
+git clone https://github.com/codingo/Interlace.git
+cd Interlace
+sudo python3 setup.py install
+cd ~/tools/
+echo "done"
+
 echo "Installing Patator"
-git clone https://github.com/lanjelot/patator
+git clone https://github.com/lanjelot/patator.git
 cd patator
 sudo python3 setup.py install
 cd ~/tools/
 echo "done"
 
-#install eyewitness
 echo "Installing EyeWitness"
 git clone https://github.com/FortyNorthSecurity/EyeWitness.git
-cd EyeWitness
+cd EyeWitness/Python
 cd setup
 sudo ./setup.sh
 cd ~/tools/
@@ -105,6 +163,10 @@ git clone https://github.com/maurosoria/dirsearch.git
 cd ~/tools/
 echo "done"
 
+echo "Installing ffuf"
+go get -u github.com/ffuf/ffuf
+echo "done"
+
 echo "Installing virtual host discovery"
 git clone https://github.com/jobertabma/virtual-host-discovery.git
 cd ~/tools/
@@ -120,7 +182,6 @@ git clone https://github.com/guelfoweb/knock.git
 cd ~/tools/
 echo "done"
 
-
 echo "Installing massdns"
 git clone https://github.com/blechschmidt/massdns.git
 cd ~/tools/massdns
@@ -128,38 +189,8 @@ make
 cd ~/tools/
 echo "done"
 
-echo "Installing asnlookup"
-git clone https://github.com/yassineaboukir/asnlookup.git
-cd ~/tools/asnlookup
-pip3 install -r requirements.txt
-cd ~/tools/
-echo "done"
-
-echo "Installing SubDomainizer"
-git clone https://github.com/nsonaniya2010/SubDomainizer.git
-cd ~/tools/SubDomainizer
-pip3 install -r requirements.txt
-cd ~/tools/
-echo "done"
-
-echo "Installing Subscraper"
-git clone https://github.com/m8r0wn/subscraper
-cd ~/tools/subscraper
-pip3 install -r requirements.txt
-cd ~/tools/
-echo "done"
-
-echo "Installing subfinder"
-git clone https://github.com/projectdiscovery/subfinder.git
-cd subfinder/cmd/subfinder
-go build .
-mv subfinder /usr/local/bin/
-subfinder -h
-cd ~/tools
-echo "done"
-
-echo "Installing httprobe"
-go get -u github.com/tomnomnom/httprobe
+echo "Installing httpx"
+go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
 echo "done"
 
 echo "Installing meg"
@@ -168,14 +199,6 @@ echo "done"
 
 echo "Installing unfurl"
 go get -u github.com/tomnomnom/unfurl
-echo "done"
-
-echo "Installing waybackurls"
-go get github.com/tomnomnom/waybackurls
-echo "done"
-
-echo "Downloading metabigor"
-go get -u github.com/j3ssie/metabigor
 echo "done"
 
 echo "Installing crtndstry"
@@ -188,26 +211,30 @@ git clone https://github.com/danielmiessler/SecLists.git
 cd ~/tools/
 echo "done"
 
-echo "Downloading Jenkins"
-wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
-sudo sh -c 'echo deb https://pkg.jenkins.io/debian binary/ > \
-    /etc/apt/sources.list.d/jenkins.list'
-sudo apt-get update
-sudo apt-get install jenkins
-# Stop jenkins to move to a new locations
-sudo systemctl stop jenkins
-# Delete existing folder
-sudo rm -rf /var/lib/jenkins
-# Add jenkins user to the shared bug-bounty folder
-sudo adduser jenkins vboxsf
-# Copy config jenkins config file
-sudo cp jenkins /etc/default/jenkins
-sudo systemctl start jenkins
+echo "Downloading Bug Bounty Tools from m4ll0k"
+cd ~/tools/
+git clone https://github.com/m4ll0k/BBTz.git
+cd ~/tools/
+echo "done"
 
 # subzy, subjack, assetfinder
+echo "Installing assetfinder"
 go get -u github.com/tomnomnom/assetfinder
+echo "done"
 
-go get -u github.com/jaeles-project/gospider
+echo "Installing nuclei"
+go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest
+echo "done"
+
+echo "Installing favfreak"
+git clone https://github.com/devanshbatham/FavFreak
+echo "done"
+
+echo "Installing Sn1per"
+git clone https://github.com/1N3/Sn1per
+cd Sn1per
+bash install.sh
+echo "done"
 
 echo -e "\n\n\n\nDone! All tools are set up in ~/tools"
-ls -la
+ls -la ~/tools

@@ -1,0 +1,23 @@
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+# Disable the AWS module.
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+# Set the time format
+[time]
+disabled = false
+time_format = "%T"
+format = "$time($style) "
+utc_time_offset = "-8"
+
+[battery]
+disabled = true
+
+[docker_context]
+disabled = true
