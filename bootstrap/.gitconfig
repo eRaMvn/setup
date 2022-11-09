@@ -1,0 +1,50 @@
+[http]
+	postBuffer = 524288000
+[mergetool]
+	keepBackup = false
+[core]
+	whitespace = trailing-space,space-before-tab
+	hooksPath = /Users/thienphan/.git/hooks
+	editor = code --wait
+[diff]
+	tool = vscode
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE
+[push]
+	default = simple
+[merge]
+	tool = vscode
+[mergetool "code"]
+	cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+[credential]
+	helper = osxkeychain
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[feature]
+	manyFiles = 1
+[user]
+	name = Thien Phan
+	email = thien.phan@instacart.com
+[url "ssh://git@github.com"]
+	insteadOf = https://github.com
+[alias]
+	s = status
+	cm = commit -v
+	cma = commit -v --amend
+	cmm = commit --message
+	tree = log --graph --pretty=oneline --abbrev-commit --decorate --color=always
+	forest = log --graph --branches=* --pretty=oneline --abbrev-commit --decorate --color=always
+	adda = add --all
+	resolve = mergetool
+	dfa = diff -w --color=always
+	dfs = diff --cached --color=always
+	fetch = fetch -a
+	ap = add --patch
+	an = add --intent-to-add
+	mg = merge --stat
+	diffstat = diff --color --stat
+	fixup = commit --fixup
+	rbcont = rebase --continue
+	rbabort = rebase --abort
+[mergetool "vscode"]
+	cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
