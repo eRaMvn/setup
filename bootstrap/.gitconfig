@@ -46,5 +46,8 @@
 	fixup = commit --fixup
 	rbcont = rebase --continue
 	rbabort = rebase --abort
+	mainbranch = "!git remote show origin | sed -n '/HEAD branch/s/.*: //p'"
+    rb = "!git pull origin $(git mainbranch) --rebase"
+	fp = push origin HEAD --force-with-lease
 [mergetool "vscode"]
 	cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
