@@ -34,7 +34,7 @@
 	cmm = commit --message
 	tree = log --graph --pretty=oneline --abbrev-commit --decorate --color=always
 	forest = log --graph --branches=* --pretty=oneline --abbrev-commit --decorate --color=always
-	adda = add --all
+	aa = add --all
 	resolve = mergetool
 	dfa = diff -w --color=always
 	dfs = diff --cached --color=always
@@ -44,10 +44,11 @@
 	mg = merge --stat
 	diffstat = diff --color --stat
 	fixup = commit --fixup
-	rbcont = rebase --continue
-	rbabort = rebase --abort
+	rbc = rebase --continue
+	rba = rebase --abort
 	mainbranch = "!git remote show origin | sed -n '/HEAD branch/s/.*: //p'"
     rb = "!git pull origin $(git mainbranch) --rebase"
 	fp = push origin HEAD --force-with-lease
+	nb = "!f() { git checkout -b $1; }; f"
 [mergetool "vscode"]
 	cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
