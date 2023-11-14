@@ -10,4 +10,4 @@ export PATH=$HOME/.pyenv/shims:$PATH
 alias git-remove-untracked='git fetch --prune && git branch -r | awk "{print \$1}" | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk "{print \$1}" | xargs git branch -D'
 export PATH="/usr/local/opt/libpq/bin:$PATH"
 alias python=/opt/homebrew/bin/python3
-eval "$($BREW_PREFIX/bin/pyenv init -)"
+eval "$(/opt/homebrew/bin/pyenv init -)"
