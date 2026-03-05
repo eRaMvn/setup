@@ -54,5 +54,11 @@
 	drb = "!f() { git push origin --delete $1; }; f"
 	dlb = "!f() { git branch --delete $1; }; f"
 	mb = "!git checkout $(git mainbranch)"
+	wta = "!f() { git worktree add \"$@\"; }; f"
+	wtl = worktree list
+	wtr = "!f() { git worktree remove \"$@\"; }; f"
+	wtp = worktree prune
+	wtab = "!f() { git worktree add \"$1\" -b \"$2\" $(git mainbranch); }; f"
+	wtrf = "!f() { git worktree remove --force \"$@\"; }; f"
 [mergetool "vscode"]
 	cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
