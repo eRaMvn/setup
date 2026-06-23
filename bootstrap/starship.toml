@@ -14,7 +14,7 @@ disabled = true
 disabled = false
 time_format = "%T"
 format = "$time($style) "
-utc_time_offset = "-8"
+utc_time_offset = "local"
 
 [battery]
 disabled = true
