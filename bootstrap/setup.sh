@@ -105,6 +105,8 @@ load_homebrew() {
 
 install_formulae() {
   brew install \
+    awscli \
+    azure-cli \
     fd \
     gh \
     git \
@@ -182,6 +184,7 @@ install_casks() {
   install_cask "codex"
   install_claude_code
   install_cask "font-jetbrains-mono-nerd-font"
+  install_cask "google-cloud-sdk"
 }
 
 install_dotfiles() {
